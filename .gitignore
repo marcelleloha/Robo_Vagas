@@ -1,0 +1,10 @@
+# Ignorar arquivos temporários do Excel
+~$*.xlsx
+
+# Ignorar cache do Python (pastas __pycache__)
+__pycache__/
+*.pyc
+
+# Ignorar arquivos de ambiente virtual (se você criar um dia)
+.env
+venv/
