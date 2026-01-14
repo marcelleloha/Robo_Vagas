@@ -1,0 +1,39 @@
+name: Executar Robô de Vagas Diário
+
+on:
+  schedule:
+    # Roda as 02:00 UTC (Aprox 23:00 Brasília)
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Permite rodar manualmente clicando no botão
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependências
+        run: |
+          pip install -r requirements.txt
+
+      - name: Rodar o Robô
+        run: python extrator_vagas.py
+
+      - name: Salvar o Excel atualizado no GitHub
+        run: |
+          git config --global user.name 'Robo Vagas'
+          git config --global user.email 'robo@noreply.github.com'
+          git add vagas_apinfo.xlsx
+          # Só commita se houver mudança
+          git commit -m "Atualização automática: $(date)" || exit 0
+          git push
