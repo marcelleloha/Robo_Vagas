@@ -28,6 +28,7 @@ def iniciar_driver():
     # chrome_options.add_argument("--headless") 
     
     # Configurações para estabilidade (evita erros em servidores/docker)
+    chrome_options.add_argument("--headless") # OBRIGATÓRIO NA NUVEM
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--window-size=1920,1080")

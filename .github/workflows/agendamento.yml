@@ -2,9 +2,8 @@ name: Executar Robô de Vagas Diário
 
 on:
   schedule:
-    # Roda as 02:00 UTC (Aprox 23:00 Brasília)
     - cron: '0 2 * * *'
-  workflow_dispatch: # Permite rodar manualmente clicando no botão
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -22,7 +21,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Instalar dependências
+      # --- NOVO: INSTALAR GOOGLE CHROME E DEPENDÊNCIAS DO SISTEMA ---
+      - name: Instalar Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Instalar dependências do Python
         run: |
           pip install -r requirements.txt
 
@@ -34,6 +39,5 @@ jobs:
           git config --global user.name 'Robo Vagas'
           git config --global user.email 'robo@noreply.github.com'
           git add vagas_apinfo.xlsx
-          # Só commita se houver mudança
           git commit -m "Atualização automática: $(date)" || exit 0
           git push
